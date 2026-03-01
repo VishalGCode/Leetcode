@@ -8,7 +8,6 @@ class Solution {
                 prev=0;
             }i++;
         }    
-        if(prev>=curr) curr=prev;
-        return curr;
+        return Math.max(curr,prev);
     }
 }
