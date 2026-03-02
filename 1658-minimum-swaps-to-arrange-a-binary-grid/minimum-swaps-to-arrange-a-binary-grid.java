@@ -4,26 +4,20 @@ public class Solution {
         int[] zeros = new int[n];
         for (int i = 0; i < n; i++) {
             int count = 0;
-            for (int j = n - 1; j >= 0 && grid[i][j] == 0; j--) {
-                count++;
-            }
+            for (int j = n - 1; j >= 0 && grid[i][j] == 0; j--) count++;
             zeros[i] = count;
         }
         int swaps = 0;
         for (int i = 0; i < n; i++) {
-            int needed = n - i - 1;
-            int j = i;
-            while (j < n && zeros[j] < needed) {
-                j++;
-            }
-            if (j == n) return -1; 
-            while (j > i) {
-                int temp = zeros[j];
-                zeros[j] = zeros[j - 1];
-                zeros[j - 1] = temp;
+            int required = n - i - 1,pos = i;
+            while (pos < n && zeros[pos] < required) pos++;
+            if (pos == n) return -1;
+            while (pos > i) {
+                zeros[pos] = zeros[pos - 1];
+                pos--;
                 swaps++;
-                j--;
             }
+            zeros[i] = required; 
         }
         return swaps;
     }
