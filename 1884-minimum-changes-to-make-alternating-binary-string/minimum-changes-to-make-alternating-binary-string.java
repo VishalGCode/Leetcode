@@ -1,9 +1,9 @@
 class Solution {
     public int minOperations(String s) {
-        int mis = 0;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) - '0' != i % 2) mis++;
-        }
-        return Math.min(mis, s.length() - mis);
+        int count = 0, n = s.length();
+        for (int i = 0; i < n; i++)
+            count += (s.charAt(i) ^ i) & 1;
+          
+        return Math.min(count, n - count);
     }
 }
