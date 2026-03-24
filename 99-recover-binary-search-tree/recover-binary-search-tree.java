@@ -15,22 +15,20 @@
  */
 class Solution {
     TreeNode prev=null,first=null,second=null;
-    void preorder(TreeNode root){
+    void postorder(TreeNode root){
         if(root==null)
             return ;
-        preorder(root.left);
+        postorder(root.left);
         if(prev!=null&&root.val<prev.val){
-            if(first==null)
-                first=prev;
+            if(first==null) first=prev;
             second=root;
         }
         prev=root;
-        preorder(root.right);
+        postorder(root.right);
     }
     public void recoverTree(TreeNode root) {
-        if(root==null)
-            return ; 
-        preorder(root);
+        if(root==null) return ; 
+        postorder(root);
         int temp=first.val;
         first.val=second.val;
         second.val=temp;
