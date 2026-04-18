@@ -1,32 +1,57 @@
+import java.util.*;
+
 class Solution {
-    int currVal = 0;
-    int currCount = 0;
-    int maxCount = 0;
-    List<Integer> result = new ArrayList<>();
     public int[] findMode(TreeNode root) {
-        inorder(root);
+        List<Integer> result = new ArrayList<>();
+        TreeNode curr = root;
+        TreeNode prev = null;
+        int currVal = 0;
+        int currCount = 0;
+        int maxCount = 0;
+        while (curr != null) {
+            if (curr.left == null) {
+                int val = curr.val;
+                if (val != currVal) {
+                    currVal = val;
+                    currCount = 0;
+                }
+                currCount++;
+                if (currCount > maxCount) {
+                    maxCount = currCount;
+                    result.clear();
+                    result.add(val);
+                } else if (currCount == maxCount) {
+                    result.add(val);
+                }
+                curr = curr.right;
+            } else {
+                TreeNode pred = curr.left;
+                while (pred.right != null && pred.right != curr) {
+                    pred = pred.right;
+                }
+
+                if (pred.right == null) {
+                    pred.right = curr;
+                    curr = curr.left;
+                } else {
+                    pred.right = null;
+                    int val = curr.val;
+                    if (val != currVal) {
+                        currVal = val;
+                        currCount = 0;
+                    }
+                    currCount++;
+                    if (currCount > maxCount) {
+                        maxCount = currCount;
+                        result.clear();
+                        result.add(val);
+                    } else if (currCount == maxCount) {
+                        result.add(val);
+                    }
+                    curr = curr.right;
+                }
+            }
+        }
         return result.stream().mapToInt(i -> i).toArray();
-    }
-
-    private void inorder(TreeNode node) {
-        if (node == null) return;
-        inorder(node.left);
-        process(node.val);
-        inorder(node.right);
-    }
-
-    private void process(int val) {
-        if (val != currVal) {
-            currVal = val;
-            currCount = 0;
-        }
-        currCount++;
-        if (currCount > maxCount) {
-            maxCount = currCount;
-            result.clear();
-            result.add(val);
-        } else if (currCount == maxCount) {
-            result.add(val);
-        }
     }
 }
