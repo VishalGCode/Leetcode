@@ -1,6 +1,6 @@
 class Solution {
     public int mirrorDistance(int n) {
-        return (int) Math.abs(n - rev(n));
+        return Math.abs(n - rev(n));
     }
 
     private int rev(int n) {
@@ -9,6 +9,6 @@ class Solution {
             sum = sum * 10 + n % 10;
             n /= 10;
         }
-        return (int) sum;
+        return sum;
     }
 }
