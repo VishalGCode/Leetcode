@@ -8,11 +8,10 @@ class Solution {
                 maxDist = Math.max(maxDist, j - i);
                 j++; 
             } else {
-                i++; 
+                i++;j++; 
             }
         }
 
         return maxDist;
     }
 }
-
