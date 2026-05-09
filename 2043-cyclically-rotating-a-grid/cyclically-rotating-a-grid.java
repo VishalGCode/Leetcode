@@ -1,52 +1,72 @@
 class Solution {
     public int[][] rotateGrid(int[][] grid, int k) {
-        int m = grid.length;
-        int n = grid[0].length;
+        int m = grid.length,n = grid[0].length;
         int layers = Math.min(m, n) / 2;
 
         for (int layer = 0; layer < layers; layer++) {
-            // boundaries
-            int top = layer;
-            int left = layer;
-            int bottom = m - layer - 1;
-            int right = n - layer - 1;
+            int top = layer,bottom = m - layer - 1,left = layer,right = n - layer - 1;
+            int[] ring = extractLayer(grid, top, bottom, left, right);
+            int len = ring.length;
+            int shift = k % len;
+            int[] rotated = new int[len];
 
-            // extract layer elements
-            java.util.List<Integer> vals = new java.util.ArrayList<>();
-
-            // top row
-            for (int j = left; j <= right; j++) vals.add(grid[top][j]);
-
-            // right column
-            for (int i = top + 1; i <= bottom - 1; i++) vals.add(grid[i][right]);
-
-            // bottom row
-            for (int j = right; j >= left; j--) vals.add(grid[bottom][j]);
-
-            // left column
-            for (int i = bottom - 1; i >= top + 1; i--) vals.add(grid[i][left]);
-
-            int len = vals.size();
-            int rot = k % len;
-
-            // rotate counter-clockwise
-            java.util.List<Integer> rotated = new java.util.ArrayList<>(len);
-            for (int i = 0; i < len; i++) rotated.add(vals.get((i + rot) % len));
-
-            int idx = 0;
-
-            // put back top row
-            for (int j = left; j <= right; j++) grid[top][j] = rotated.get(idx++);
-
-            // put back right column
-            for (int i = top + 1; i <= bottom - 1; i++) grid[i][right] = rotated.get(idx++);
-
-            // put back bottom row
-            for (int j = right; j >= left; j--) grid[bottom][j] = rotated.get(idx++);
-
-            // put back left column
-            for (int i = bottom - 1; i >= top + 1; i--) grid[i][left] = rotated.get(idx++);
+            // Counter-clockwise rotation
+            for (int i = 0; i < len; i++) {
+                rotated[(i + shift) % len] = ring[i];
+            }
+            fillLayer(grid, rotated, top, bottom, left, right);
         }
         return grid;
+    }
+
+    private int[] extractLayer(int[][] grid,int top,int bottom,int left,int right) {
+        int perimeter = 2 * (bottom - top + right - left);
+        int[] ring = new int[perimeter];
+        int idx = 0;
+
+        // left column
+        for (int row = top; row <= bottom; row++) {
+            ring[idx++] = grid[row][left];
+        }
+
+        // bottom row
+        for (int col = left + 1; col <= right; col++) {
+            ring[idx++] = grid[bottom][col];
+        }
+
+        // right column
+        for (int row = bottom - 1; row >= top; row--) {
+            ring[idx++] = grid[row][right];
+        }
+
+        // top row
+        for (int col = right - 1; col >= left + 1; col--) {
+            ring[idx++] = grid[top][col];
+        }
+        return ring;
+    }
+
+    private void fillLayer(int[][] grid,int[] ring,int top,int bottom,int left,int right) {
+        int idx = 0;
+
+        // left column
+        for (int row = top; row <= bottom; row++) {
+            grid[row][left] = ring[idx++];
+        }
+
+        // bottom row
+        for (int col = left + 1; col <= right; col++) {
+            grid[bottom][col] = ring[idx++];
+        }
+
+        // right column
+        for (int row = bottom - 1; row >= top; row--) {
+            grid[row][right] = ring[idx++];
+        }
+
+        // top row
+        for (int col = right - 1; col >= left + 1; col--) {
+            grid[top][col] = ring[idx++];
+        }
     }
 }
