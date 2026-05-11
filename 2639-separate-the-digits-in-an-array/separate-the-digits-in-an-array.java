@@ -1,23 +1,42 @@
 class Solution {
-    public int[] separateDigits(int[] nums) {
+    public int[] separateDigits(int[] arr) {
+        // Store total number of digits
+        int totalDigits = 0;
 
-        // List to store final digits
-        List<Integer> list = new ArrayList<>();
+        //Count total digits
+        for (int n : arr) {
+            int temp = n;
 
-        for (int num : nums) {
-            // Convert number to string
-            String s = String.valueOf(num);
-            // Extract every digit
-            for (char ch : s.toCharArray()) {
-                // Convert character to integer digit
-                list.add(ch - '0');
+            // Special case for 0
+            if (temp == 0) totalDigits++;
+            else {
+                // Count digits one by one
+                while (temp > 0) {
+                    totalDigits++;
+                    // Remove last digit
+                    temp /= 10;
+                }
             }
         }
 
-        // Convert List<Integer> to int[]
-        int[] ans = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            ans[i] = list.get(i);
+        // Final answer array
+        int[] ans = new int[totalDigits];
+        //Start filling from end
+        int index = totalDigits - 1;
+        //Traverse array backwards
+        for (int i = arr.length - 1; i >= 0; i--) {
+            int num = arr[i];
+            // Handle 0 separately
+            if(num == 0) ans[index--] = 0;
+            else{
+                // Extract digits from right to left
+                while (num > 0) {
+                    // Store last digit
+                    ans[index--] = num % 10;
+                    // Remove last digit
+                    num /= 10;
+                }
+            }
         }
         return ans;
     }
