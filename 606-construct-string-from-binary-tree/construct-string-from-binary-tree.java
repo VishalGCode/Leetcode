@@ -13,8 +13,7 @@
  *     }
  * }
  */
-class Solution {
-
+class Solution{
     public String tree2str(TreeNode root) {
         StringBuilder sb = new StringBuilder();
         solve(root, sb);
@@ -22,20 +21,13 @@ class Solution {
     }
 
     private void solve(TreeNode root, StringBuilder sb) {
-        // if (root == null) {
-        //     return;
-        // }
-
+        if (root == null) return;
         sb.append(root.val);
-
         if (root.left != null) {
             sb.append("(");
             solve(root.left, sb);
             sb.append(")");
-        } else if (root.right != null) {
-            sb.append("()");
-        }
-
+        }else if (root.right != null) sb.append("()");
         if (root.right != null) {
             sb.append("(");
             solve(root.right, sb);
