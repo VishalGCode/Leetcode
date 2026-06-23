@@ -1,47 +1,75 @@
 class Solution {
+    int[] rows = new int[9];
+    int[] cols = new int[9];
+    int[] boxes = new int[9];
+    List<int[]> empty = new ArrayList<>();
+
     public void solveSudoku(char[][] board) {
-        helper(board, 0, 0);     
-    }
-    public boolean helper(char[][] board, int row, int col){
-        if(row == board.length) return true;
-        int nrow=0, ncol=0;
-        if(col == board.length-1){
-            nrow = row+1;
-            ncol = 0;
-        }else{
-            nrow = row;
-            ncol = col+1;
-        }
-        if(board[row][col] != '.'){
-            if(helper(board, nrow, ncol)) return true;
-        }else{
-            //fill the place
-            for(int i=1; i<=9; i++){
-                if(issafe(board, row, col, i)){
-                    board[row][col] = (char)(i + '0');
-                    if(helper(board, nrow , ncol)) return true;
-                    else board[row][col] = '.';
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                if (board[r][c] == '.') {
+                    empty.add(new int[]{r, c});
+                } else {
+                    int num = board[r][c] - '1';
+                    int bit = 1 << num;
+                    int box = (r / 3) * 3 + (c / 3);
+                    rows[r] |= bit;
+                    cols[c] |= bit;
+                    boxes[box] |= bit;
                 }
             }
         }
-        return false;
+        solve(board);
     }
-    public boolean issafe(char[][] board, int row, int col, int number){
-        //column
-        for(int i=0; i<board.length; i++){
-            if(board[i][col] == (char)(number + '0')) return false;
+
+    private boolean solve(char[][] board) {
+
+        if (empty.isEmpty()) {
+            return true;
         }
-        //row
-        for(int i=0; i<board.length; i++){
-            if(board[row][i] == (char)(number + '0')) return false;
-        }
-        int sr = 3*(row/3);
-        int sc = 3*(col/3);
-        for(int i=sr; i<sr+3; i++){
-            for(int j=sc; j<sc+3; j++){
-                if(board[i][j] == (char)(number + '0')) return false;
+
+        int bestIdx = -1;
+        int minChoices = 10;
+        int bestMask = 0;
+
+        for (int i = 0; i < empty.size(); i++) {
+            int r = empty.get(i)[0];
+            int c = empty.get(i)[1];
+            int box = (r / 3) * 3 + (c / 3);
+            int used = rows[r] | cols[c] | boxes[box];
+            int available = (~used) & 0x1FF;
+            int choices = Integer.bitCount(available);
+            if (choices < minChoices) {
+                minChoices = choices;
+                bestIdx = i;
+                bestMask = available;
+                if (choices == 1) break;
             }
-        }    
-    return true;
+        }
+        if (minChoices == 0) {
+            return false;
+        }
+        int[] cell = empty.remove(bestIdx);
+        int r = cell[0];
+        int c = cell[1];
+        int box = (r / 3) * 3 + (c / 3);
+
+        while (bestMask != 0) {
+            int bit = bestMask & -bestMask;
+            bestMask -= bit;
+            int digit = Integer.numberOfTrailingZeros(bit);
+            board[r][c] = (char) ('1' + digit);
+            rows[r] |= bit;
+            cols[c] |= bit;
+            boxes[box] |= bit;
+
+            if (solve(board)) return true;
+            rows[r] ^= bit;
+            cols[c] ^= bit;
+            boxes[box] ^= bit;
+            board[r][c] = '.';
+        }
+        empty.add(bestIdx, cell);
+        return false;
     }
 }
