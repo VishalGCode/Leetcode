@@ -3,8 +3,8 @@ class Solution {
         Set<Integer> s1 = new HashSet<>();
         Set<Integer> s2 = new HashSet<>();
         List<List<Integer>> ans = new ArrayList<>(2);
-        ans.add(new ArrayList<>());
-        ans.add(new ArrayList<>());
+        ans.add(new ArrayList<>(0));
+        ans.add(new ArrayList<>(1));
         for(int i : nums1) s1.add(i);
         for(int i : nums2) s2.add(i);
         for(int i : s1){
