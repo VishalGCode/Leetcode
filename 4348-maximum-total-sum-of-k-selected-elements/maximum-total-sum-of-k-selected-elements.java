@@ -1,12 +1,23 @@
 class Solution {
     public long maxSum(int[] nums, int k, int mul) {
-    Arrays.sort(nums);
-    long ans = 0;
-    for(int i = nums.length-1; i>=nums.length-k; i--){
-        if(mul>0) ans += (long)nums[i]*mul;
-        else ans += (long)nums[i];
-        mul--;
-    }
-    return ans;
+        Arrays.sort(nums);
+        int n = nums.length;
+        int idx = n - 1;
+        long sum = 0;
+
+        while(mul > 0 && k > 0) {
+            sum += (long)nums[idx]*mul;
+            idx--;
+            mul--;
+            k--;
+        }
+
+        while(k > 0) {
+            sum += nums[idx];
+            idx--;
+            k--;
+        }
+
+        return sum;
     }
 }
