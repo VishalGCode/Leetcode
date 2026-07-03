@@ -1,15 +1,31 @@
 class Solution {
-     public int[] findRightInterval(int[][] intervals) {
-        TreeMap<Integer, Integer> startPoints = new TreeMap<>();
-        for(int i=0; i<intervals.length; i++){
-            startPoints.put(intervals[i][0], i);
+    public int[] findRightInterval(int[][] intervals) {
+        int n = intervals.length;
+        long[] starts = new long[n];
+        for (int i = 0; i < n; i++) {
+            starts[i] = ((long) intervals[i][0] << 32) | i;
         }
-        
-        int[] ans = new int[intervals.length];
-        for(int i=0; i<intervals.length; i++){
-            Integer nextClosestStartPoint = startPoints.ceilingKey(intervals[i][1]);
-            ans[i]= nextClosestStartPoint==null ? -1 : startPoints.get(nextClosestStartPoint);
+        Arrays.sort(starts);
+
+        int[] result = new int[n];
+        for (int i = 0; i < n; i++) {
+            int end = intervals[i][1];
+            int low = 0;
+            int high = n - 1;
+            int ans = -1;
+
+            while (low <= high) {
+                int mid = (low + high) >>> 1;
+                int startVal = (int) (starts[mid] >> 32);
+                if (startVal >= end) {
+                    ans = (int) starts[mid];
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+            }
+            result[i] = ans;
         }
-        return ans;
+        return result;
     }
 }
