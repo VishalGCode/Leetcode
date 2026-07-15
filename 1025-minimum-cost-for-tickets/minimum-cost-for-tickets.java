@@ -4,7 +4,7 @@ class Solution {
         return solve(n, days, costs);    
     }
     private int solve(int n, int[] days, int[] costs){
-        int[] dp = new int[n+1];
+        int[] dp = new int[365];
         dp[n]=0;
         for(int k=n-1; k>=0; k--){
             int option1=costs[0]+dp[k+1];
