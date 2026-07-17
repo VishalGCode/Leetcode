@@ -1,20 +1,19 @@
 class Solution {
     public int minSideJumps(int[] obstacles) {
-        int[][] dp= new int[4][obstacles.length];
-        return solve(obstacles,2,0,dp);   
-    }
-    private int solve(int[] obs, int lane, int pos, int[][]dp){
-        if(pos==obs.length-1) return 0;
-        if(dp[lane][pos] != 0) return dp[lane][pos];
-        if(obs[pos+1] != lane) return solve(obs,lane,pos+1,dp);
-        else{
-            int ans=Integer.MAX_VALUE;
-            for(int i=1;i<=3;i++){
-                if(lane != i && obs[pos]!=i){
-                    ans=Math.min(ans,1+solve(obs,i,pos,dp));
+        int[] dp = new int[] { 0, 0, 0, 0 };
+        int n = obstacles.length;
+        for (int pos = n - 2; pos >= 0; pos--) {
+            if (obstacles[pos] != 0)
+                dp[obstacles[pos]] = 1000000;
+            int next = obstacles[pos + 1];
+            if (next != 0)
+                dp[next] = 1000000;
+            for (int lane = 1; lane <= 3; lane++) {
+                if (lane != next && obstacles[pos] != lane) {
+                    dp[next] = Math.min(dp[next], dp[lane] + 1);
                 }
             }
-            return dp[lane][pos]=ans;
         }
+        return dp[2];
     }
 }
