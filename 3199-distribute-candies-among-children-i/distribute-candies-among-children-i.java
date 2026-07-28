@@ -1,14 +1,9 @@
 class Solution {
     public int distributeCandies(int n, int limit) {
-    // if(limit>n) limit=0;
-    int c=0;
-    for(int i=0;i<=Math.min(limit,n);i++){
-        for(int j=0;j<=Math.min(limit,n);j++){
-            for(int k=0;k<=Math.min(limit,n);k++){
-                if(i+j+k==n) c++;
-            }
-        }
+    return (int)(ways(n)-3*ways(n-(limit+1))+3*ways(n-2*(limit+1))-ways(n-3*(limit+1)));
     }
-    return c;
+    private long ways(int n){
+        if(n<0) return 0;
+        return (long)((n+1)*(n+2))/2;
     }
 }
