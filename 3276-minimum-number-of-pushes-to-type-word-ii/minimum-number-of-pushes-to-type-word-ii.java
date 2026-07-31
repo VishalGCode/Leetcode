@@ -5,19 +5,14 @@ class Solution {
         for(int i=0;i<n;i++){
             freq[word.charAt(i)-'a']++; 
         }  
-        int ans = 0;
+        // int ans = 0;
         int count = 0;
         Arrays.sort(freq);
-        int j = 0;
-        while(freq[j] == 0){
-            j++;
+        for(int i=25;i>=0;i--){
+            if(freq[i]==0) break;
+            int count1=(25-i)/8+1;
+            count+=freq[i]*count1;
         }
-        for(int i = 25; i >= j; i--){
-            if(25-i < 8) ans += freq[i];
-            else if(25-i < 16) ans += 2 * freq[i];
-            else if(25-i < 24) ans += 3 * freq[i];
-            else ans += 4 * freq[i];
-        }
-        return ans;
+        return count;
     }
 }
