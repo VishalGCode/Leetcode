@@ -10,8 +10,8 @@ class Solution {
         Arrays.sort(freq);
         for(int i=25;i>=0;i--){
             if(freq[i]==0) break;
-            int count1=(25-i)/8+1;
-            count+=freq[i]*count1;
+            // int count1=(25-i)/8+1;
+            count+=freq[i]*((25-i)/8+1);
         }
         return count;
     }
