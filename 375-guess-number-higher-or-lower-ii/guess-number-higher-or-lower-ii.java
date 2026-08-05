@@ -1,17 +1,17 @@
 class Solution {
     public int getMoneyAmount(int n) {
         int[][] dp=new int[n+1][n+1];
-        for(int len=2;len<=n;len++){
-            for(int i=1;i<=n-len+1;i++){
-                int j=i+len-1;
-                dp[i][j]=Integer.MAX_VALUE;
-                for(int x=i;x<=j;x++){
-                    int left=(x>i)?dp[i][x-1]:0, right=(x<j)?dp[x+1][j]:0;
-                    int cost=x+Math.max(left,right);
-                    dp[i][j]=Math.min(dp[i][j],cost);
-                }
-            }
+        return solve(1,n,dp);
+    }
+
+    private int solve(int st, int end, int[][] dp){
+        if(st>=end) return 0;
+        if(dp[st][end]!=0) return dp[st][end];
+        int ans=Integer.MAX_VALUE;
+        for(int i=st;i<=end;i++){
+            ans=Math.min(ans, i+Math.max(solve(st,i-1,dp), solve(i+1,end,dp)));
         }
-        return dp[1][n];
+        dp[st][end]=ans;
+        return ans;
     }
 }
