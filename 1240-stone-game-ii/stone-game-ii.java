@@ -12,7 +12,7 @@ class Solution {
         }
         return dp[person][i][m]=ans;
     }
-    public int stoneGameII(int[] piles) {
+    public int stoneGameII(int[] piles){
         dp=new int[2][101][101];
         for(int[][] a:dp) for(int[] b:a) Arrays.fill(b,-1);
         return solve(piles,1,0,1);
