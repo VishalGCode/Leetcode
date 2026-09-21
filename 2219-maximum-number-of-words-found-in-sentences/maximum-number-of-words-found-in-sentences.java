@@ -1,13 +1,10 @@
 class Solution {
     public int mostWordsFound(String[] sentences) {
-        int count=0;
-        for(String s:sentences){
-            int sp=0;
-            for(int i=0;i<s.length();i++){
-                if(s.charAt(i)==' ') sp++;
-            }
-            count=Math.max(count,sp+1);
+        int max=-1;
+        for(int i=0;i<sentences.length;i++){
+            String arr[] = sentences[i].split(" ");
+            if(arr.length>max) max=arr.length;
         }
-        return count;
-    }    
+        return max;
+    }
 }
