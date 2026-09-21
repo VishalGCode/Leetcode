@@ -1,6 +1,6 @@
 class Solution {
     public int mostWordsFound(String[] sentences) {
-        int count=1;
+        int count=0;
         for(String s:sentences){
             int sp=0;
             for(int i=0;i<s.length();i++){
