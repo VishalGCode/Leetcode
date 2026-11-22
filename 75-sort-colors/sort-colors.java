@@ -7,13 +7,9 @@ class Solution {
             else count3++;
         }
         for(int i=0;i<nums.length;i++){
-            if(i<count1) nums[i]=0;
-        }
-        for(int i=0;i<nums.length;i++){
-            if(i<count2) nums[count1+i]=1;
-        }
-        for(int i=0;i<nums.length;i++){
-            if(i<count3) nums[count1+count2+i]=2;
+            if(i<count1) nums[i]=0;  
+            else if(i<count1+count2) nums[i]=1;
+            else if(i<count1+count2+count3) nums[i]=2;
         }
     }
 }
